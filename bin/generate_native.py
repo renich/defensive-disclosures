@@ -49,10 +49,19 @@ def chat_completion(messages, model, base_url, api_key):
         return None
 
 
+def make_slug(text):
+    """Convert text to a URL-friendly slug."""
+    text = text.lower()
+    text = re.sub(r"[^a-z0-9\s-]", "", text)
+    text = re.sub(r"\s+", "-", text)
+    text = re.sub(r"-+", "-", text)
+    return text.strip("-")
+
+
 def generate_disclosure():
     api_key = os.getenv("OPENAI_API_KEY", "sk-antigravity")
     base_url = os.getenv("OPENAI_BASE_URL", "http://localhost:11434/v1")
-    model = os.getenv("OPENAI_MODEL", "google/gemini-3-flash-preview")
+    model = os.getenv("OPENAI_MODEL", "google/antigravity-gemini-3-flash-preview")
     author = os.getenv("DISCLOSURE_AUTHOR", "René Bon Ćirić")
 
     if not os.path.exists("instructions.rst"):
@@ -70,7 +79,7 @@ def generate_disclosure():
     year = datetime.now().year
 
     for idea in ideas:
-        slug = re.sub(r"[^a-zA-Z0-9_-]", "", idea.get("slug", "idea"))
+        slug = make_slug(idea.get("title", "idea"))
         path_en = os.path.abspath(f"ideas/en/{year}-{slug}.rst")
         path_es = os.path.abspath(f"ideas/es/{year}-{slug}.rst")
 
