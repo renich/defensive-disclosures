@@ -2,7 +2,7 @@
 
 # Detect virtual environment
 VENV=venv
-VENV_BIN=$(VENV)/bin/python3
+VENV_BIN=$(VENV)/bin/python
 PYTHON=$(shell if [ -f $(VENV_BIN) ]; then echo $(VENV_BIN); else echo python3; fi)
 
 BIN_DIR=bin
@@ -12,13 +12,13 @@ IDEAS_DIR=ideas
 BLUE=\033[94m
 RESET=\033[0m
 
-.PHONY: all generate index pdf clean
+.PHONY: all index pdf clean
 
-all: generate index pdf
+all: index pdf
 
 generate:
-	@echo "$(BLUE)Starting LLM generation...$(RESET)"
-	@$(PYTHON) $(BIN_DIR)/generator.py
+	@echo "$(RED)Generator script removed. Use Agent-Driven SOP. $(RESET)"
+	@exit 1
 
 index:
 	@echo "$(BLUE)Rebuilding indices...$(RESET)"

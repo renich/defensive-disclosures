@@ -45,6 +45,7 @@ Divulgaciones en Español
    2026-rank_and_rent_local
    2026-rastreador_vuelos_erroneos
    2026-respondedor_reviews
+   2026-sat-monitor-v1
    2026-scout_terrenos_ejidales
    2026-scraper_boletin_judicial
    2026-sincronizador_inventarios
