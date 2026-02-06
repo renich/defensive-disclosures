@@ -27,6 +27,7 @@ Divulgaciones en Español
    2026-comparador_seguros
    2026-detector_subvaluacion_inmobiliaria
    2026-distributed-prior-art-system
+   2026-dummy-test-idea
    2026-filtro_candidatos
    2026-generador_complementos_pago
    2026-generador_contenido_programatico
