@@ -1,8 +1,9 @@
 [
   {
+    "id": "000",
     "slug": "distributed-prior-art-system",
     "title": "Distributed Cryptographic System for Immutable Defensive Publication",
-    "raw_concept": "A method using distributed version control (Git), automated CI/CD pipelines, and third-party digital object identifier (DOI) repositories (Zenodo) to timestamp and cryptographically verify technical disclosures, thereby invalidating novelty for patent applications in multiple jurisdictions simultaneously."
+    "raw_concept": "A computerized method using distributed version control (Git), automated continuous integration pipelines, and third-party Digital Object Identifier (DOI) repositories (Zenodo) to cryptographically timestamp and publicly disseminate technical disclosures. This system automates the generation of bilingual (English/Spanish) prior art documents from raw input using Large Language Models (LLMs), ensuring compliance with USPTO and IMPI novelty-destroying standards."
   },
   {
     "slug": "sat-monitor-v1",
