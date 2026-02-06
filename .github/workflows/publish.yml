@@ -35,21 +35,17 @@ jobs:
       - name: Generate Tag
         id: tag
         run: |
-          set -x
-          DATE_TAG=$(date +'%Y.%m.%d')
-          # Fetch tags specifically to ensure we see them
-          git fetch --tags
-          RUN_COUNT=$(git tag -l "v$DATE_TAG.*" | wc -l | xargs)
-          NEW_TAG="v$DATE_TAG.$((RUN_COUNT + 1))"
-          echo "tag=$NEW_TAG" >> $GITHUB_OUTPUT
-          echo "Generated tag: $NEW_TAG"
+          TAG="v${{ github.run_number }}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "Generated tag: $TAG"
 
       - name: Build PDFs
         run: |
-          set -x
+          set -e
           mkdir -p build/en build/es
           make pdf
-          ls -R build/
+          echo "Generated PDFs:"
+          find build -name "*.pdf"
 
       - name: Create GitHub Release
         id: create_release
@@ -59,12 +55,16 @@ jobs:
           name: Disclosure Release ${{ steps.tag.outputs.tag }}
           body: |
             Automated defensive publication release.
-            Timestamp: $(date -u +'%Y-%m-%dT%H:%M:%SZ')
+            Timestamp: ${{ github.event.head_commit.timestamp }}
+            Commit: ${{ github.sha }}
             
             This release contains technical disclosures generated to establish Prior Art.
             The creation of this release triggers the Zenodo integration for permanent archival and DOI minting.
           draft: false
           prerelease: false
+          fail_on_unmatched_files: false
+          generate_release_notes: true
+          make_latest: true
           files: |
             build/en/*.pdf
             build/es/*.pdf
