@@ -13,13 +13,17 @@ BLUE=\033[94m
 RED=\033[91m
 RESET=\033[0m
 
-.PHONY: all generate index pdf publish clean
+.PHONY: all generate index pdf publish lint clean
 
 all: index pdf
 
+lint:
+	@echo "$(BLUE)Running rstcheck...$(RESET)"
+	@rstcheck -r .
+
 generate:
-	@echo "$(BLUE) [Agent] Generating missing disclosures...$(RESET)"
-	@python3 $(BIN_DIR)/generate_native.py
+	@echo "$(BLUE) [Agent] Triggering opencode generation...$(RESET)"
+	@opencode run --model google/gemini-3-flash-preview --agent build "Follow the SOP in instructions.rst to process ideas.jsonc and generate missing disclosures in ideas/en/ and ideas/es/. EXECUTE IMMEDIATELY."
 
 index:
 	@echo "$(BLUE)Rebuilding indices...$(RESET)"
@@ -33,7 +37,7 @@ pdf:
 
 publish: generate index
 	@echo "$(BLUE) [Git] Committing and Pushing...$(RESET)"
-	@git add $(IDEAS_DIR)/
+	@git add $(IDEAS_DIR)/ ideas.jsonc
 	@git diff-index --quiet HEAD || git commit -m "feat: automated defensive disclosure release $(shell date +%Y-%m-%d)"
 	@git push origin master
 	@echo "$(BLUE) [Done] Release triggered.$(RESET)"

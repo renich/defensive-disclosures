@@ -23,7 +23,7 @@ System Architecture
 The repository implements a hardened, **Zero-Dependency** automated pipeline for defensive publication.
 
 Automation Infrastructure
-------------------------
+-------------------------
 * **The Brain (instructions.rst):** Centralized clinical guidelines that enforce technical rigor, "PHOSITA" enabling descriptions, and "Alice/Mayo" doctrine compliance.
 * **Native Engine (bin/generate_native.py):** A dependency-free Python script utilizing only the Standard Library (`urllib`, `json`) to communicate with local LLM servers (e.g., Ollama/OpenCode).
 * **Indexing (bin/update_index.py):** Automatically maintains jurisdictional sub-indices and root documentation hierarchy.

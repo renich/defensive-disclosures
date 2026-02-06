@@ -52,14 +52,14 @@ def chat_completion(messages, model, base_url, api_key):
 def generate_disclosure():
     api_key = os.getenv("OPENAI_API_KEY", "sk-antigravity")
     base_url = os.getenv("OPENAI_BASE_URL", "http://localhost:11434/v1")
-    model = os.getenv("OPENAI_MODEL", "google/antigravity-gemini-3-flash")
+    model = os.getenv("OPENAI_MODEL", "google/gemini-3-flash-preview")
     author = os.getenv("DISCLOSURE_AUTHOR", "René Bon Ćirić")
 
     if not os.path.exists("instructions.rst"):
         print(f"{RED}Error: instructions.rst missing.{RESET}")
         sys.exit(1)
 
-    ideas = json.loads(load_file("ideas.json"))
+    ideas = json.loads(load_file("ideas.jsonc"))
     system_prompt = load_file("instructions.rst")
     template_en = load_file("templates/TEMPLATE_EN.rst").replace(
         "[AUTHOR_NAME]", author
