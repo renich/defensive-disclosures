@@ -7,7 +7,7 @@
   },
   {
     "slug": "sat-monitor-v1",
-    "title": "SAT Blacklist Monitor",
+    "title": "SAT Blacklist Monitor v1.1",
     "raw_concept": "An automated system that polls the SAT (Tax Authority) 69-B API/List daily, normalizes the data, and runs a cross-reference match against an enterprise's vendor list to flag non-deductible fiscal risks in real-time."
   }
 ]
