@@ -1,0 +1,23 @@
+[
+  {
+    "id": "000",
+    "slug": "distributed-prior-art-system",
+    "title": "Distributed Cryptographic System for Immutable Defensive Publication",
+    "raw_concept": "A computerized method using distributed version control (Git), automated continuous integration pipelines, and third-party Digital Object Identifier (DOI) repositories (Zenodo) to cryptographically timestamp and publicly disseminate technical disclosures. This system automates the generation of bilingual (English/Spanish) prior art documents from raw input using Large Language Models (LLMs), ensuring compliance with USPTO and IMPI novelty-destroying standards."
+  },
+  {
+    "slug": "sat-monitor-v1",
+    "title": "SAT Blacklist Monitor v1.1",
+    "raw_concept": "An automated system that polls the SAT (Tax Authority) 69-B API/List daily, normalizes the data, and runs a cross-reference match against an enterprise's vendor list to flag non-deductible fiscal risks in real-time."
+  },
+  {
+    "slug": "dummy-test-idea",
+    "title": "Dummy Test Idea for Automation",
+    "raw_concept": "A dummy concept to test the end-to-end automated publication pipeline."
+  },
+  {
+    "slug": "autonomous-ai-prior-art-agent",
+    "title": "Autonomous AI Agent for Real-time Prior Art Generation and Archival",
+    "raw_concept": "A system where an AI agent monitors technical repositories or conceptual drafts in real-time, automatically transforms them into structured technical disclosures based on jurisdictional templates, and handles the entire publishing and archival process to establish immediate Prior Art."
+  }
+]
