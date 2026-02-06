@@ -8,16 +8,16 @@
   {
     "slug": "sat-monitor-v1",
     "title": "SAT Blacklist Monitor v1.1",
-    "raw_concept": "An automated system that polls the SAT (Tax Authority) 69-B API/List daily, normalizes the data, and runs a cross-reference match against an enterprise's vendor list to flag non-deductible fiscal risks in real-time."
+    "raw_concept": "An automated fiscal compliance system configured to poll the Servicio de Administración Tributaria (SAT) Article 69-B exclusion list via API, normalize the retrieved data structure, and perform real-time cross-referencing against enterprise vendor registries to preemptively identify non-deductible fiscal risks."
   },
   {
     "slug": "dummy-test-idea",
     "title": "Dummy Test Idea for Automation",
-    "raw_concept": "A dummy concept to test the end-to-end automated publication pipeline."
+    "raw_concept": "A synthetic validation concept designed to verify the integrity, latency, and error-handling capabilities of the end-to-end automated publication and archival pipeline."
   },
   {
     "slug": "autonomous-ai-prior-art-agent",
     "title": "Autonomous AI Agent for Real-time Prior Art Generation and Archival",
-    "raw_concept": "A system where an AI agent monitors technical repositories or conceptual drafts in real-time, automatically transforms them into structured technical disclosures based on jurisdictional templates, and handles the entire publishing and archival process to establish immediate Prior Art."
+    "raw_concept": "An autonomous system configured to monitor technical repositories and conceptual drafts, utilizing Large Language Models (LLMs) to transform unstructured inputs into rigorous technical disclosures compliant with jurisdictional templates (USPTO/IMPI), and orchestrating the cryptographic timestamping and archival process to establish immediate Prior Art."
   }
 ]
