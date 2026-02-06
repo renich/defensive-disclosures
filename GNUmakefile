@@ -32,8 +32,8 @@ index:
 pdf:
 	@echo "$(BLUE)Compiling PDFs (Secure Mode)...$(RESET)"
 	@mkdir -p $(BUILD_DIR)/en $(BUILD_DIR)/es
-	@find $(IDEAS_DIR)/en -name "*.rst" ! -name "index.rst" -exec sh -c 'pandoc "$$1" -o "$(BUILD_DIR)/en/$$(basename "$$1" .rst).pdf" --pdf-engine=xelatex' _ {} \;
-	@find $(IDEAS_DIR)/es -name "*.rst" ! -name "index.rst" -exec sh -c 'pandoc "$$1" -o "$(BUILD_DIR)/es/$$(basename "$$1" .rst).pdf" --pdf-engine=xelatex' _ {} \;
+	@find $(IDEAS_DIR)/en -name "*.rst" ! -name "index.rst" -print0 | xargs -0 -P 4 -I {} sh -c 'pandoc "{}" -o "$(BUILD_DIR)/en/$$(basename "{}" .rst).pdf" --pdf-engine=xelatex'
+	@find $(IDEAS_DIR)/es -name "*.rst" ! -name "index.rst" -print0 | xargs -0 -P 4 -I {} sh -c 'pandoc "{}" -o "$(BUILD_DIR)/es/$$(basename "{}" .rst).pdf" --pdf-engine=xelatex'
 
 publish: generate index
 	@echo "$(BLUE) [Git] Committing and Pushing...$(RESET)"

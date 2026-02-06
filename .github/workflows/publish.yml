@@ -44,28 +44,18 @@ jobs:
           echo "Generated PDFs:"
           find build -name "*.pdf"
 
-      - name: Create GitHub Release
-        id: create_release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.metadata.outputs.tag }}
-          name: Defensive Disclosures - ${{ steps.metadata.outputs.date }}
-          body: |
-            Automated defensive publication release.
-            Date: ${{ steps.metadata.outputs.date }}
-            Timestamp: ${{ github.event.head_commit.timestamp }}
-            Commit: ${{ github.sha }}
-
-            This release contains technical disclosures generated to establish Prior Art.
-            The creation of this release triggers the Zenodo integration for permanent archival and DOI minting.
-          draft: false
-          prerelease: false
-          fail_on_unmatched_files: false
-          generate_release_notes: true
-          make_latest: true
-          overwrite: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Verify PDF Count
+        run: |
+          EN_COUNT=$(ls build/en/*.pdf 2>/dev/null | wc -l)
+          ES_COUNT=$(ls build/es/*.pdf 2>/dev/null | wc -l)
+          TOTAL=$((EN_COUNT + ES_COUNT))
+          echo "English PDFs: $EN_COUNT"
+          echo "Spanish PDFs: $ES_COUNT"
+          echo "Total PDFs: $TOTAL"
+          if [ "$TOTAL" -lt 100 ]; then
+            echo "##[error]Expected ~110 PDFs, found $TOTAL"
+            exit 1
+          fi
 
       - name: Upload Release Assets
         run: |
