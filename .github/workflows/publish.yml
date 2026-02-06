@@ -54,6 +54,29 @@ jobs:
           echo "Total PDFs: $TOTAL"
           echo "warning_count=$TOTAL" >> $GITHUB_OUTPUT
 
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.metadata.outputs.tag }}
+          name: Defensive Disclosures - ${{ steps.metadata.outputs.date }}
+          body: |
+            Automated defensive publication release.
+            Date: ${{ steps.metadata.outputs.date }}
+            Timestamp: ${{ github.event.head_commit.timestamp }}
+            Commit: ${{ github.sha }}
+
+            This release contains technical disclosures generated to establish Prior Art.
+            The creation of this release triggers the Zenodo integration for permanent archival and DOI minting.
+          draft: false
+          prerelease: false
+          fail_on_unmatched_files: false
+          generate_release_notes: true
+          make_latest: true
+          overwrite: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Upload Release Assets
         run: |
           RELEASE_ID=${{ steps.create_release.outputs.id }}
