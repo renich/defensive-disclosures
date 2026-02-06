@@ -61,8 +61,18 @@ jobs:
           generate_release_notes: true
           make_latest: true
           overwrite: true
-          files: |
-            build/en/*.pdf
-            build/es/*.pdf
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Assets
+        run: |
+          RELEASE_ID=${{ steps.create_release.outputs.id }}
+          for file in build/en/*.pdf build/es/*.pdf; do
+            if [ -f "$file" ]; then
+              echo "Uploading $file..."
+              curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                   -H "Content-Type: application/octet-stream" \
+                   --data-binary "@$file" \
+                   "https://uploads.github.com/repos/${{ github.repository }}/releases/${RELEASE_ID}/assets?name=$(basename $file)"
+            fi
+          done
