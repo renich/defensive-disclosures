@@ -27,11 +27,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y pandoc texlive-xetex
 
-      - name: Generate Tag
-        id: tag
+      - name: Generate Release Metadata
+        id: metadata
         run: |
-          TAG="v${{ github.run_number }}"
+          DATE=$(date +%Y-%m-%d)
+          TAG="v${DATE}-${GITHUB_RUN_NUMBER}"
           echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "date=$DATE" >> $GITHUB_OUTPUT
           echo "Generated tag: $TAG"
 
       - name: Build PDFs
@@ -46,13 +48,14 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.tag.outputs.tag }}
-          name: Disclosure Release ${{ steps.tag.outputs.tag }}
+          tag_name: ${{ steps.metadata.outputs.tag }}
+          name: Defensive Disclosures - ${{ steps.metadata.outputs.date }}
           body: |
             Automated defensive publication release.
+            Date: ${{ steps.metadata.outputs.date }}
             Timestamp: ${{ github.event.head_commit.timestamp }}
             Commit: ${{ github.sha }}
-            
+
             This release contains technical disclosures generated to establish Prior Art.
             The creation of this release triggers the Zenodo integration for permanent archival and DOI minting.
           draft: false
