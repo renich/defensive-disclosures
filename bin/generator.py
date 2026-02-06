@@ -2,8 +2,9 @@ import json
 import os
 import sys
 import re
+import urllib.request
+import urllib.error
 from datetime import datetime
-from openai import OpenAI
 
 # ANSI Colors
 RED = "\033[91m"
@@ -21,33 +22,36 @@ def load_file(path):
         sys.exit(1)
 
 
-def sanitize_slug(slug):
-    # CWE-22 Fix: Remove directory separators and non-alphanumeric chars (except - and _)
-    return re.sub(r"[^a-zA-Z0-9_-]", "", slug)
+def chat_completion(messages, model, base_url, api_key):
+    """Standard lib HTTP request to local AI server."""
+    url = f"{base_url.rstrip('/')}/chat/completions"
+    payload = {"model": model, "messages": messages, "temperature": 0.2}
+    headers = {"Content-Type": "application/json", "Authorization": f"Bearer {api_key}"}
+    try:
+        req = urllib.request.Request(
+            url, data=json.dumps(payload).encode("utf-8"), headers=headers
+        )
+        with urllib.request.urlopen(req) as response:
+            result = json.loads(response.read().decode("utf-8"))
+            return result["choices"][0]["message"]["content"]
+    except urllib.error.URLError as e:
+        print(f"{RED}API Error: {e}{RESET}")
+        if hasattr(e, "read"):
+            print(f"{RED}Server: {e.read().decode()}{RESET}")
+        return None
 
 
 def generate_disclosure():
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        print(f"{RED}Error: OPENAI_API_KEY environment variable not set.{RESET}")
+    api_key = os.getenv("OPENAI_API_KEY", "sk-dummy")
+    base_url = os.getenv("OPENAI_BASE_URL", "http://localhost:11434/v1")
+    model = os.getenv("OPENAI_MODEL", "google/gemini-2.5-pro")
+    author = os.getenv("DISCLOSURE_AUTHOR", "René Bon Ćirić")
+
+    if not os.path.exists("instructions.rst"):
+        print(f"{RED}Error: instructions.rst missing.{RESET}")
         sys.exit(1)
 
-    model = os.getenv("OPENAI_MODEL", "gpt-4-turbo")
-    author = os.getenv("DISCLOSURE_AUTHOR", "EVALinux Contributor")
-
-    client = OpenAI(api_key=api_key)
-
-    if not os.path.exists("ideas.json"):
-        print(f"{RED}Error: ideas.json not found.{RESET}")
-        sys.exit(1)
-
-    try:
-        ideas = json.loads(load_file("ideas.json"))
-    except json.JSONDecodeError:
-        print(f"{RED}Error: ideas.json contains invalid JSON.{RESET}")
-        sys.exit(1)
-
-    # Cache templates and system prompt
+    ideas = json.loads(load_file("ideas.json"))
     system_prompt = load_file("instructions.rst")
     template_en = load_file("templates/TEMPLATE_EN.rst").replace(
         "[AUTHOR_NAME]", author
@@ -55,56 +59,38 @@ def generate_disclosure():
     template_es = load_file("templates/TEMPLATE_ES.rst").replace(
         "[AUTHOR_NAME]", author
     )
-
     year = datetime.now().year
 
     for idea in ideas:
-        raw_slug = idea.get("slug", "unnamed-idea")
-        slug = sanitize_slug(raw_slug)
-        title = idea.get("title", "Untitled Idea")
-        concept = idea.get("raw_concept", "")
-
+        slug = re.sub(r"[^a-zA-Z0-9_-]", "", idea.get("slug", "idea"))
         path_en = os.path.abspath(f"ideas/en/{year}-{slug}.rst")
         path_es = os.path.abspath(f"ideas/es/{year}-{slug}.rst")
 
-        if os.path.exists(path_en) and os.path.exists(path_es):
-            print(f"{YELLOW}Skipping {slug}: Files already exist.{RESET}")
+        if os.path.exists(path_en):
+            print(f"{YELLOW}Skipping {slug}: Exists.{RESET}")
             continue
 
-        print(f"Generating disclosure for: {GREEN}{title}{RESET} using {model}...")
+        print(f"Generating: {GREEN}{idea['title']}{RESET}...")
 
-        configs = [
-            ("EN", "USPTO (USA)", template_en, path_en),
-            ("ES", "IMPI (Mexico)", template_es, path_es),
-        ]
-
-        for lang, jurisdiction, template, output_path in configs:
-            prompt = f"Title: {title}\nConcept: {concept}\nJurisdiction: {jurisdiction}\n\nApply template:\n{template}"
-
-            try:
-                response = client.chat.completions.create(
-                    model=model,
-                    messages=[
-                        {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": prompt},
-                    ],
-                )
-                content = response.choices[0].message.content
-            except Exception as e:
-                print(f"{RED}OpenAI API Error ({lang}): {e}{RESET}")
-                continue
-
-            # Harden safety check with regex (CWE-Compliance)
-            if re.search(r"\.\.\s+warning::", content, re.IGNORECASE):
-                print(
-                    f"{RED}[CRITICAL ALERT] Legal Weakness Detected in {lang} output for {slug}!{RESET}"
-                )
-
-            os.makedirs(os.path.dirname(output_path), exist_ok=True)
-            with open(output_path, "w", encoding="utf-8") as f:
-                f.write(content)
-
-            print(f"  - {lang} version saved.")
+        for lang, tmpl, path, jur in [
+            ("EN", template_en, path_en, "USPTO"),
+            ("ES", template_es, path_es, "IMPI"),
+        ]:
+            prompt = f"Title: {idea['title']}\nConcept: {idea['raw_concept']}\nJurisdiction: {jur}\n\nTemplate:\n{tmpl}"
+            content = chat_completion(
+                [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": prompt},
+                ],
+                model,
+                base_url,
+                api_key,
+            )
+            if content:
+                os.makedirs(os.path.dirname(path), exist_ok=True)
+                with open(path, "w", encoding="utf-8") as f:
+                    f.write(content)
+                print(f"  - {lang} saved.")
 
 
 if __name__ == "__main__":
