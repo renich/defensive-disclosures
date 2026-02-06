@@ -1,0 +1,58 @@
+========================
+Divulgaciones en Español
+========================
+
+.. toctree::
+   :maxdepth: 1
+
+   2026-agente_buzon_tributario
+   2026-agente_citas_medicas
+   2026-agente_inbox_zero
+   2026-agente_lead_magnet
+   2026-agente_refacturacion
+   2026-agente_soporte_l1
+   2026-agregador_eventos_locales
+   2026-agregador_remates_bancarios
+   2026-analista_sentimiento_politico
+   2026-arbitraje_autos_usados
+   2026-auditor_imss_nomina
+   2026-auditor_recibos_cfe
+   2026-bot_cotizaciones_materiales
+   2026-bot_reservas_restaurantes
+   2026-buscador_becas_fondos
+   2026-buscador_piezas_yonke
+   2026-cazador_citas_sat
+   2026-cazador_errores_precios
+   2026-cobrador_automatico
+   2026-comparador_seguros
+   2026-detector_subvaluacion_inmobiliaria
+   2026-distributed-prior-art-system
+   2026-filtro_candidatos
+   2026-generador_complementos_pago
+   2026-generador_contenido_programatico
+   2026-generador_resumenes_noticias
+   2026-gestor_multas_transito
+   2026-moderador_comentarios_toxicos
+   2026-monitor_cofepris
+   2026-monitor_disponibilidad_visas
+   2026-monitor_dof
+   2026-monitor_listas_negras_sat
+   2026-monitor_precios_agricolas
+   2026-monitor_precios_competencia
+   2026-monitor_rentas_vacacionales
+   2026-monitor_subastas_aduana
+   2026-monitor_tipo_cambio
+   2026-rank_and_rent_local
+   2026-rastreador_vuelos_erroneos
+   2026-respondedor_reviews
+   2026-scout_terrenos_ejidales
+   2026-scraper_boletin_judicial
+   2026-sincronizador_inventarios
+   2026-traductor_documentacion_tecnica
+   2026-validador_carta_porte
+   2026-validador_guias_envio
+   2026-validador_masivo_xml
+   2026-verificador_fibra_optica
+   2026-verificador_repse
+   2026-vigilante_marcas
+   2026-watchdog_licitaciones

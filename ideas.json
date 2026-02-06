@@ -1,0 +1,12 @@
+[
+  {
+    "slug": "distributed-prior-art-system",
+    "title": "Distributed Cryptographic System for Immutable Defensive Publication",
+    "raw_concept": "A method using distributed version control (Git), automated CI/CD pipelines, and third-party digital object identifier (DOI) repositories (Zenodo) to timestamp and cryptographically verify technical disclosures, thereby invalidating novelty for patent applications in multiple jurisdictions simultaneously."
+  },
+  {
+    "slug": "sat-monitor-v1",
+    "title": "SAT Blacklist Monitor",
+    "raw_concept": "An automated system that polls the SAT (Tax Authority) 69-B API/List daily, normalizes the data, and runs a cross-reference match against an enterprise's vendor list to flag non-deductible fiscal risks in real-time."
+  }
+]
