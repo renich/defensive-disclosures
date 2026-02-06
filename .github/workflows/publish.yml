@@ -6,6 +6,10 @@ on:
       - master
     paths:
       - 'ideas/**'
+      - 'ideas.json'
+      - 'templates/**'
+      - 'instructions.rst'
+  workflow_dispatch:
 
 jobs:
   release:
