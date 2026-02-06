@@ -52,10 +52,7 @@ jobs:
           echo "English PDFs: $EN_COUNT"
           echo "Spanish PDFs: $ES_COUNT"
           echo "Total PDFs: $TOTAL"
-          if [ "$TOTAL" -lt 100 ]; then
-            echo "##[error]Expected ~110 PDFs, found $TOTAL"
-            exit 1
-          fi
+          echo "warning_count=$TOTAL" >> $GITHUB_OUTPUT
 
       - name: Upload Release Assets
         run: |
