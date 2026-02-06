@@ -1,6 +1,10 @@
 # Orchestrator for Defensive Disclosure Pipeline (Hardened)
 
-PYTHON=python3
+# Detect virtual environment
+VENV=venv
+VENV_BIN=$(VENV)/bin/python3
+PYTHON=$(shell if [ -f $(VENV_BIN) ]; then echo $(VENV_BIN); else echo python3; fi)
+
 BIN_DIR=bin
 BUILD_DIR=build
 IDEAS_DIR=ideas

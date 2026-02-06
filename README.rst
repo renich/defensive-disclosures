@@ -78,6 +78,28 @@ Contact
 -------
 renich@woralelandia.com / +52 33 3576-5013
 
+Execution & Automation
+======================
+
+The pipeline is managed via a hardened `GNUmakefile`. It automatically detects the local Python virtual environment (`venv/`) if present.
+
+To generate new disclosures:
+
+1.  **Configure Environment**: Set your API key and (optionally) the author name.
+    
+    .. code-block:: bash
+
+       export OPENAI_API_KEY='your-key-here'
+       export DISCLOSURE_AUTHOR='Your Name'
+
+2.  **Run Pipeline**:
+
+    .. code-block:: bash
+
+       make
+
+This will sequentially generate new disclosures from `ideas.json`, rebuild the jurisdictional indices, and attempt to compile PDF artifacts.
+
 Licensing & Usage
 -----------------
 This repository and its contents (Technical Disclosures) are licensed under the **Creative Commons Attribution 4.0 International License (CC BY 4.0)**.
