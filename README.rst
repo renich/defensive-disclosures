@@ -20,15 +20,14 @@ The mechanisms, algorithms, and system architectures described herein have been 
 
 System Architecture
 ===================
-The repository implements a hardened, automated pipeline for defensive publication.
+The repository implements a hardened, **Zero-Dependency** automated pipeline for defensive publication.
 
 Automation Infrastructure
 ------------------------
-* **Generation Engine (bin/generator.py):** An LLM-powered drafting tool that transforms structured concepts (via `ideas.json`) into rigorous technical disclosures. It enforces jurisdictional requirements for both USPTO (USA) and IMPI (Mexico).
-- **Hardened Security:** Includes input sanitization (CWE-22 mitigation) and secure shell execution.
-- **Alice/Mayo Compliance:** Strictly engineered to describe "Technical Realization" rather than abstract business logic.
+* **The Brain (instructions.rst):** Centralized clinical guidelines that enforce technical rigor, "PHOSITA" enabling descriptions, and "Alice/Mayo" doctrine compliance.
+* **Native Engine (bin/generate_native.py):** A dependency-free Python script utilizing only the Standard Library (`urllib`, `json`) to communicate with local LLM servers (e.g., Ollama/OpenCode).
 * **Indexing (bin/update_index.py):** Automatically maintains jurisdictional sub-indices and root documentation hierarchy.
-* **Orchestration (GNUmakefile):** Provides a unified interface for generation, indexing, and PDF compilation via Pandoc.
+* **Orchestration (GNUmakefile):** Unified interface for generation, indexing, and PDF compilation via Pandoc.
 
 Automated Publishing Pipeline
 -----------------------------
@@ -41,72 +40,41 @@ This system leverages a "Distributed Cryptographic System" for legal proof of ex
 Usage
 =====
 
-Environment Setup
------------------
-The generator requires an OpenAI API key and allows for jurisdictional overrides:
+Agent-Driven SOP (Standard Operating Procedure)
+-----------------------------------------------
+The preferred workflow uses the **Opencode Agent** directly as the generation engine:
+
+1. Add a new concept to ``ideas.json``.
+2. Provide the Agent with the **SOP Prompt** (found in project documentation).
+3. The Agent reads ``instructions.rst`` and the jurisdictional templates to write the ``.rst`` files directly.
+4. Run ``make publish`` to finalize.
+
+Manual/Native Pipeline
+----------------------
+The system supports a zero-dependency local pipeline:
 
 .. code-block:: bash
 
-   export OPENAI_API_KEY='your-key-here'
-   export DISCLOSURE_AUTHOR='Your Name'
-   export OPENAI_MODEL='gpt-4-turbo'
+   # 1. Start your local LLM server (e.g., Ollama)
+   # 2. Run the automated publication cycle
+   make publish
 
-Generation & Indexing
----------------------
-To process new ideas from ``ideas.json``:
+By default, this connects to ``http://localhost:11434/v1``. You can override settings via environment variables:
 
 .. code-block:: bash
 
-   make all
-
-This command executes:
-1. ``make generate``: LLM drafting of missing disclosures.
-2. ``make index``: Rebuilding of RST toctrees.
-3. ``make pdf``: Compilation of PDF artifacts in the ``build/`` directory.
+   export OPENAI_BASE_URL="http://your-server:port/v1"
+   export OPENAI_MODEL="your-model-id"
+   make publish
 
 Engagement & Commercialization
 ==============================
 While the *ideas* disclosed herein are dedicated to the public domain to ensure freedom to operate, the **execution expertise, specific code implementations, and trade secret optimizations** remain with the author.
 
-We are open to:
-
-* **Consulting & Implementation:** If you wish to deploy these systems.
-* **Strategic Partnerships:** For joint development.
-* **Prior Art Citations:** If you are filing a related (but distinct) patent, you are legally required to cite these documents.
-
 Contact
 -------
 renich@woralelandia.com / +52 33 3576-5013
 
-Execution & Automation
-======================
-
-The pipeline is managed via a hardened `GNUmakefile`. It automatically detects the local Python virtual environment (`venv/`) if present.
-
-To generate new disclosures:
-
-1.  **Configure Environment**: Set your API key and (optionally) the author name.
-    
-    .. code-block:: bash
-
-       export OPENAI_API_KEY='your-key-here'
-       export DISCLOSURE_AUTHOR='Your Name'
-
-2.  **Run Pipeline**:
-
-    .. code-block:: bash
-
-       make
-
-This will sequentially generate new disclosures from `ideas.json`, rebuild the jurisdictional indices, and attempt to compile PDF artifacts.
-
 Licensing & Usage
 -----------------
-This repository and its contents (Technical Disclosures) are licensed under the **Creative Commons Attribution 4.0 International License (CC BY 4.0)**.
-
-**You are free to:**
-* **Share** — copy and redistribute the material in any medium or format.
-* **Adapt** — remix, transform, and build upon the material for any purpose, even commercially.
-
-**Under the following terms:**
-* **Attribution** — You must give appropriate credit (citing the Author and the DOI), provide a link to the license, and indicate if changes were made.
+This repository and its contents are licensed under **CC BY 4.0**. You are free to share and adapt the material as long as you provide appropriate attribution (citing the Author and the DOI).
