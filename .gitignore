@@ -1,2 +1,4 @@
-instructions.rst
 venv/
+build/
+*.pyc
+__pycache__/
