@@ -65,6 +65,7 @@ jobs:
           fail_on_unmatched_files: false
           generate_release_notes: true
           make_latest: true
+          overwrite: true
           files: |
             build/en/*.pdf
             build/es/*.pdf
