@@ -32,17 +32,24 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y pandoc texlive-xetex
 
-      - name: Build PDFs
-        run: make pdf
-
       - name: Generate Tag
         id: tag
         run: |
+          set -x
           DATE_TAG=$(date +'%Y.%m.%d')
-          RUN_COUNT=$(git tag -l "v$DATE_TAG.*" | wc -l)
+          # Fetch tags specifically to ensure we see them
+          git fetch --tags
+          RUN_COUNT=$(git tag -l "v$DATE_TAG.*" | wc -l | xargs)
           NEW_TAG="v$DATE_TAG.$((RUN_COUNT + 1))"
           echo "tag=$NEW_TAG" >> $GITHUB_OUTPUT
           echo "Generated tag: $NEW_TAG"
+
+      - name: Build PDFs
+        run: |
+          set -x
+          mkdir -p build/en build/es
+          make pdf
+          ls -R build/
 
       - name: Create GitHub Release
         id: create_release
